@@ -1,0 +1,35 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.configure("2") do |config|
+  
+  config.vm.box = "centos/7"
+  config.vm.hostname = "vagrant.mykezy.com"
+
+#  config.vbguest.auto_update = false
+  config.omnibus.chef_version = :latest 
+  config.vm.network "forwarded_port", guest: 80, host: 8080, host_ip: "127.0.0.1"
+
+  # Example for VirtualBox:
+  #
+  config.vm.provider "virtualbox" do |vb|
+     vb.memory = "1024"
+   end
+  config.vm.provision "shell", inline: <<-SHELL
+     yum update -y
+   SHELL
+  config.vm.provision "chef_client" do |chef|
+      chef.chef_server_url = "https://chef.mykezy.com/organizations/clicksolutions"
+      chef.validation_client_name = "clicksolutions-validator"
+      chef.validation_key_path = "~/Desktop/clicksolutions-validator.pem"
+      chef.delete_node = true
+      chef.delete_client = true
+      chef.add_recipe "java"
+      chef.add_recipe "learn_chef_httpd"
+      chef.json = {
+         "java" => {
+           "jdk_version" => "7"
+          }
+        }
+    end
+end
