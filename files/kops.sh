@@ -9,3 +9,5 @@ chmod +x kubectl && mv kubectl /usr/bin/
 apt-get update -y
 apt-get install python-pip -y
 pip install awscli
+
+git clone https://github.com/wardviaene/kubernetes-course
