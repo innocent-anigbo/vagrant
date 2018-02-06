@@ -11,4 +11,5 @@ apt-get install python-pip -y
 pip install awscli
 
 git clone https://github.com/wardviaene/kubernetes-course
+mkdir ~/.aws
 cp /vagrant/credentials ~/.aws/credentials
