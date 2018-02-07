@@ -1,10 +1,11 @@
 #!/bin/bash
 
-wget --quiet https://github.com/kubernetes/kops/releases/download/1.7.0/kops-linux-amd64
+curl -LO https://github.com/kubernetes/kops/releases/download/$(curl -s https://api.github.com/repos/kubernetes/kops/releases/latest | grep tag_name | cut -d '"' -f 4)/kops-linux-amd64
 chmod +x kops-linux-amd64
-mv kops-linux-amd64 kops && mv kops /usr/bin/
-wget --quiet https://storage.googleapis.com/kubernetes-release/release/v1.7.3/bin/linux/amd64/kubectl
-chmod +x kubectl && mv kubectl /usr/bin/
+sudo mv kops-linux-amd64 /usr/local/bin/kops
+curl -LO https://storage.googleapis.com/kubernetes-release/release/`curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt`/bin/darwin/amd64/kubectl
+
+chmod +x ./kubectl && sudo mv ./kubectl /usr/local/bin/kubectl
 
 apt-get update -y
 apt-get install python-pip -y
